@@ -29,7 +29,11 @@ namespace ValeriaAlvarado_ProyBiblioEsc
 
         public void MostrarDetalle()
         {
-            Console.WriteLine($"Libro: {Titulo_de_Libro} | ISBN: {Cod_ISBN} | Copias: {Copias_Fisicas.Length} | Prestamos: {Prestamos}");
+            Console.WriteLine($"Libro: {Titulo_de_Libro}");
+            Console.WriteLine($"ISBN: {Cod_ISBN}");
+            Console.WriteLine($"Copias Físicas Disponibles: {Copias_Fisicas.Length}");
+            Console.WriteLine($"Préstamos Registrados: {Prestamos}");
+            Console.WriteLine(new string('-', 45));
         }
     }
 
@@ -49,15 +53,71 @@ namespace ValeriaAlvarado_ProyBiblioEsc
             miBiblioteca.Add(new Titulo("Antes de Diciembre", "1286073228912", 8, 9));
             miBiblioteca.Add(new Titulo("Boulevard", "1289682522341", 4, 11));
 
-            Console.WriteLine("=== Libros Biblioteca Escolar Cátalogo (DIA 2) ===");
-            Console.WriteLine();
+            bool menuActivo = true;
 
-            foreach (var libro in miBiblioteca)
+            while (menuActivo)
             {
-                libro.MostrarDetalle();
-            }
+                Console.Clear();
+                Console.WriteLine("=== Busqueda de Biblioteca Escolar - DIA 3===");
+                Console.WriteLine("1.Ver cátalogo completo de libros");
+                Console.WriteLine("2.Buscar libro por título o ISBN");
+                Console.WriteLine("3.Salir");
+                Console.Write("\nEscoja una de las opciónes: "); 
 
-            Console.WriteLine("\nPresiona cualquier tecla para finalizar...");
+                string opcion = Console.ReadLine();
+                switch (opcion)
+                {
+                    case "1":
+                        Console.Clear();
+                        Console.WriteLine("=== Cátalogo completo de libros ===\n");
+                        foreach (var libro in miBiblioteca)
+                        {
+                            libro.MostrarDetalle();
+                        }
+                        PausarPantalla();
+                        break;
+
+                    case "2":
+                        Console.Clear();
+                        Console.WriteLine("=== Búsqueda de títulos===\n ");
+                        Console.Write("Escriba el titulo o ISBN del libro que desee:");
+                        string terminoBusqueda = Console.ReadLine().Trim().ToLower();
+
+                        bool encontrado = false;
+                        Console.WriteLine("\n--- Resultados encontrados ---");
+
+                        foreach (var libro in miBiblioteca)
+                        {
+                            if (libro.Titulo_de_Libro.ToLower().Contains(terminoBusqueda) || libro.Cod_ISBN.Contains(terminoBusqueda))
+                            {
+                                libro.MostrarDetalle();
+                                encontrado = true;
+                            }
+                        }
+
+                        if (!encontrado)
+                        {
+                            Console.WriteLine("No encontramos ningun libro que coincida con los datos ingresados."); 
+                        }
+                        PausarPantalla();
+                        break;
+
+                    case "3":
+                        menuActivo = false;
+                        Console.WriteLine("\n¡Saliendo del sistema!");
+                        break;
+
+                    default:
+                        Console.WriteLine("\n La opcion no es válida.Vuelvalo a intentar.");
+                        PausarPantalla();
+                        break;
+                }
+            }
+        }
+
+        static void PausarPantalla()
+        {
+            Console.WriteLine("\nPresiona cualquier tecla para continuar...");
             Console.ReadKey();
         }
     }
