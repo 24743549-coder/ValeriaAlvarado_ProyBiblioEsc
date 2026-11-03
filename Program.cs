@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 
 namespace ValeriaAlvarado_ProyBiblioEsc
 {
@@ -52,6 +53,7 @@ namespace ValeriaAlvarado_ProyBiblioEsc
             }
             return false;
         }
+        
 
         // Cambia la primera copia prestada (0) a disponible (1)
         public bool DevolverCopia()
@@ -83,7 +85,7 @@ namespace ValeriaAlvarado_ProyBiblioEsc
         {
             List<Titulo> miBiblioteca = new List<Titulo>();
 
-            // Carga inicial de libros
+            // Primera carga de libros en la biblioteca
             miBiblioteca.Add(new Titulo("La ultima nota", "1280307471234", 4, 12));
             miBiblioteca.Add(new Titulo("Etéreo", "1280156012345", 7, 25));
             miBiblioteca.Add(new Titulo("El viaje de Darcy", "1286075263456", 9, 8));
@@ -98,13 +100,14 @@ namespace ValeriaAlvarado_ProyBiblioEsc
             while (menuActivo)
             {
                 Console.Clear();
-                Console.WriteLine("=== GESTIÓN DE BIBLIOTECA ESCOLAR - DÍA 4 ===");
+                Console.WriteLine("=== GESTIÓN DE BIBLIOTECA ESCOLAR - DÍA 5 ===");
                 Console.WriteLine("1. Ver catálogo completo");
                 Console.WriteLine("2. Buscar libro por título o ISBN");
                 Console.WriteLine("3. Registrar Préstamo de libro");
                 Console.WriteLine("4. Registrar Devolución de libro");
-                Console.WriteLine("5. Salir");
-                Console.Write("\nEscoja una de las opciones: ");
+                Console.WriteLine("5. Ver estadísticas de la biblioteca");
+                Console.WriteLine("6. Salir");
+                Console.Write("\nEscoja una de las opciones mostradas en pantalla: ");
 
                 string opcion = Console.ReadLine();
                 switch (opcion)
@@ -164,15 +167,15 @@ namespace ValeriaAlvarado_ProyBiblioEsc
                         }
                         else
                         {
-                            Console.WriteLine("\nLibro no encontrado.");
+                            Console.WriteLine("\nEl libro no ha sido encontrado.");
                         }
                         PausarPantalla();
                         break;
 
                     case "4":
                         Console.Clear();
-                        Console.WriteLine("=== REGISTRAR DEVOLUCIÓN ===\n");
-                        Console.Write("Ingrese el ISBN o Título del libro a devolver: ");
+                        Console.WriteLine("=== REGISTRO DE LA DEVOLUCIÓN DEL LIBRO ===\n");
+                        Console.Write("Escriba el ISBN o Título del libro a devolver: ");
                         string busquedaDevolucion = Console.ReadLine().Trim().ToLower();
 
                         Titulo libroDevolucion = miBiblioteca.FirstOrDefault(l => l.Titulo_de_Libro.ToLower().Contains(busquedaDevolucion) || l.Cod_ISBN.Contains(busquedaDevolucion));
@@ -185,7 +188,7 @@ namespace ValeriaAlvarado_ProyBiblioEsc
                             }
                             else
                             {
-                                Console.WriteLine("\nTodas las copias de este libro ya están en la biblioteca.");
+                                Console.WriteLine("\nTodas las copias de este libro ya están en la biblioteca nuevamente.");
                             }
                         }
                         else
@@ -196,7 +199,46 @@ namespace ValeriaAlvarado_ProyBiblioEsc
                         break;
 
                     case "5":
-                        menuActivo = false;
+                        Console.Clear();
+                        Console.WriteLine("===DATOS ESTADISTICOS DE LA BIBLIOTECA ESCOLAR===\n");
+                        
+                        if(miBiblioteca.Count >0)
+                        {
+                            Titulo MayorModa = miBiblioteca[0];
+                            Titulo MenorModa = miBiblioteca [0];
+                            int totalPrestamosGeneral = 0;
+
+                            foreach (var libro in miBiblioteca)
+                            {
+                                totalPrestamosGeneral += libro.Prestamos;
+                                
+                                if(libro.Prestamos > MayorModa.Prestamos)
+                                {
+                                    MayorModa = libro;
+                                }
+
+                                if (libro.Prestamos < MenorModa.Prestamos)
+                                {
+                                    MenorModa = libro;
+                                }
+                            }
+                            double promedioPrestamos = (double)totalPrestamosGeneral / miBiblioteca.Count;
+
+                            Console.WriteLine($" Libro con mayor moda(prestado mas veces):{MayorModa.Titulo_de_Libro} ({MayorModa.Prestamos} prestamos)");
+                            Console.WriteLine($" Libro con menor moda(prestado menos veces):{MenorModa.Titulo_de_Libro} ({MenorModa.Prestamos} prestamos)");
+                            Console.WriteLine($" Promedio de libros prestados por titulo: {promedioPrestamos:F2} prestamos");
+                            Console.WriteLine($" Total de prestamos realizados en la biblioteca: {totalPrestamosGeneral}");
+                        }
+                        else
+                        {
+                            Console.WriteLine("No se encuentran libros registrados en el catalogo.");
+                        }
+
+                        PausarPantalla();
+                        break;
+
+                    case "6":
+                       menuActivo = false;
                         Console.WriteLine("\n¡Saliendo del sistema!");
                         break;
 
