@@ -106,7 +106,8 @@ namespace ValeriaAlvarado_ProyBiblioEsc
                 Console.WriteLine("3. Registrar Préstamo de libro");
                 Console.WriteLine("4. Registrar Devolución de libro");
                 Console.WriteLine("5. Ver estadísticas de la biblioteca");
-                Console.WriteLine("6. Salir");
+                Console.WriteLine("6. Ordenar libros por título o popularidad");
+                Console.WriteLine("7. Salir");
                 Console.Write("\nEscoja una de las opciones mostradas en pantalla: ");
 
                 string opcion = Console.ReadLine();
@@ -114,7 +115,7 @@ namespace ValeriaAlvarado_ProyBiblioEsc
                 {
                     case "1":
                         Console.Clear();
-                        Console.WriteLine("=== Catálogo completo de libros ===\n");
+                        Console.WriteLine("=== CATÁLOGO COMPLETO POR LIBROS ===\n");
                         foreach (var libro in miBiblioteca)
                         {
                             libro.MostrarDetalle();
@@ -124,7 +125,7 @@ namespace ValeriaAlvarado_ProyBiblioEsc
 
                     case "2":
                         Console.Clear();
-                        Console.WriteLine("=== Búsqueda de títulos ===\n");
+                        Console.WriteLine("=== BÚSQUEDA POR TÍTULOS ===\n");
                         Console.Write("Escriba el título o ISBN del libro que desee: ");
                         string terminoBusqueda = Console.ReadLine().Trim().ToLower();
 
@@ -238,15 +239,41 @@ namespace ValeriaAlvarado_ProyBiblioEsc
                         break;
 
                     case "6":
-                       menuActivo = false;
-                        Console.WriteLine("\n¡Saliendo del sistema!");
-                        break;
+                        Console.Clear();
+                        Console.WriteLine("=== CATALOGO DE LIBROS DE FORMA ORDENADA ===\n");
+                        Console.WriteLine("1.Ordenar los libros de forma alfabetica(A-Z)");
+                        Console.WriteLine("2.Ordenar los libros de forma númerica de acuerdo a los prestamos");
+                        Console.Write("\nEscoja un tipo de orden:");
+                        string tipoOrden = Console.ReadLine();
 
-                    default:
-                        Console.WriteLine("\nLa opción no es válida. Vuélvalo a intentar.");
+                        if (tipoOrden == "1")
+                        {
+                            miBiblioteca = miBiblioteca.OrderBy(l => l.Titulo_de_Libro).ToList();
+                            Console.WriteLine("\n¡Los libros han sido ordenados alfabéticamente!");
+                        }
+                        else if (tipoOrden == "2")
+                        {
+                            miBiblioteca = miBiblioteca.OrderByDescending(l => l.Prestamos).ToList();
+                            Console.WriteLine("\n¡Los libros han sido ordenados por número de préstamos(mayor popularidad)!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nOpción de orden no válida.");
+                        }
+
                         PausarPantalla();
                         break;
-                }
+
+                    case "7":
+                                menuActivo = false;
+                                Console.WriteLine("\n¡Saliendo del sistema!");
+                                break;
+
+                            default:
+                                Console.WriteLine("\nLa opción no es válida. Vuélvalo a intentar.");
+                                PausarPantalla();
+                                break;
+                            }
             }
         }
 
