@@ -43,6 +43,14 @@ acomulado y el promedio de prestamos por libro.
 6. **Nueva forma Dinámica:** Permite añadir nuevos libros ingresando titulo,codigo ISBN y la cantidad de copias de este.
 
 
+## Tabla Comparativa de Arquitectura y Algoritmos
+| Criterio / Aspecto | Implementación en el Código | Descripción y Justificación |
+| :--- | :--- | :--- |
+| **Estructura de Datos** | `List<Titulo>` vs `int[] Copias_Fisicas` | Se utiliza una lista dinámica `List` para el catálogo general (permite altas) y un arreglo fijo `int[]` para los ejemplares de cada libro. |
+| **Búsqueda de Datos** | Búsqueda Lineal (`Contains` + `ToLower`) | Permite filtrar por título o ISBN ignorando diferencias entre mayúsculas y minúsculas. |
+| **Gestión de Préstamos** | Control de Estado (`1` Disponible / `0` Prestado) | Los préstamos inician en `0` y aumentan dinámicamente con la lógica de control de ejemplares. |
+| **Algoritmos de Orden** | LINQ (`OrderBy` vs `OrderByDescending`) | Permite reorganizar el catálogo alfabéticamente (A-Z) o por popularidad (mayor a menor número de préstamos). |
+
 ## Instrucciones para Ejecutar 
 
 1. Debes de descargar este repositorio.
