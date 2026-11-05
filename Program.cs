@@ -53,7 +53,7 @@ namespace ValeriaAlvarado_ProyBiblioEsc
             }
             return false;
         }
-        
+
 
         // Cambia la primera copia prestada (0) a disponible (1)
         public bool DevolverCopia()
@@ -86,14 +86,14 @@ namespace ValeriaAlvarado_ProyBiblioEsc
             List<Titulo> miBiblioteca = new List<Titulo>();
 
             // Primera carga de libros en la biblioteca
-            miBiblioteca.Add(new Titulo("La ultima nota", "1280307471234", 4, 12));
-            miBiblioteca.Add(new Titulo("Etéreo", "1280156012345", 7, 25));
-            miBiblioteca.Add(new Titulo("El viaje de Darcy", "1286075263456", 9, 8));
-            miBiblioteca.Add(new Titulo("La quimica del Amor", "1286071504567", 3, 15));
-            miBiblioteca.Add(new Titulo("Perfectos Mentirosos", "1288420415678", 2, 5));
-            miBiblioteca.Add(new Titulo("Fleur:Mi desesperada Desición", "1288497596789", 6, 18));
-            miBiblioteca.Add(new Titulo("Antes de Diciembre", "1286073228912", 8, 9));
-            miBiblioteca.Add(new Titulo("Boulevard", "1289682522341", 4, 11));
+            miBiblioteca.Add(new Titulo("La ultima nota", "1280307471234", 4, 0));
+            miBiblioteca.Add(new Titulo("Etéreo", "1280156012345", 7, 0));
+            miBiblioteca.Add(new Titulo("El viaje de Darcy", "1286075263456", 9, 0));
+            miBiblioteca.Add(new Titulo("La quimica del Amor", "1286071504567", 3, 0));
+            miBiblioteca.Add(new Titulo("Perfectos Mentirosos", "1288420415678", 2, 0));
+            miBiblioteca.Add(new Titulo("Fleur:Mi desesperada Desición", "1288497596789", 6, 0));
+            miBiblioteca.Add(new Titulo("Antes de Diciembre", "1286073228912", 8, 0));
+            miBiblioteca.Add(new Titulo("Boulevard", "1289682522341", 4, 0));
 
             bool menuActivo = true;
 
@@ -107,7 +107,8 @@ namespace ValeriaAlvarado_ProyBiblioEsc
                 Console.WriteLine("4. Registrar Devolución de libro");
                 Console.WriteLine("5. Ver estadísticas de la biblioteca");
                 Console.WriteLine("6. Ordenar libros por título o popularidad");
-                Console.WriteLine("7. Salir");
+                Console.WriteLine("7. Añadir un libro con titulo nuevo al catalogo");
+                Console.WriteLine("8. Salir");
                 Console.Write("\nEscoja una de las opciones mostradas en pantalla: ");
 
                 string opcion = Console.ReadLine();
@@ -202,18 +203,18 @@ namespace ValeriaAlvarado_ProyBiblioEsc
                     case "5":
                         Console.Clear();
                         Console.WriteLine("===DATOS ESTADISTICOS DE LA BIBLIOTECA ESCOLAR===\n");
-                        
-                        if(miBiblioteca.Count >0)
+
+                        if (miBiblioteca.Count > 0)
                         {
                             Titulo MayorModa = miBiblioteca[0];
-                            Titulo MenorModa = miBiblioteca [0];
+                            Titulo MenorModa = miBiblioteca[0];
                             int totalPrestamosGeneral = 0;
 
                             foreach (var libro in miBiblioteca)
                             {
                                 totalPrestamosGeneral += libro.Prestamos;
-                                
-                                if(libro.Prestamos > MayorModa.Prestamos)
+
+                                if (libro.Prestamos > MayorModa.Prestamos)
                                 {
                                     MayorModa = libro;
                                 }
@@ -265,15 +266,37 @@ namespace ValeriaAlvarado_ProyBiblioEsc
                         break;
 
                     case "7":
-                                menuActivo = false;
-                                Console.WriteLine("\n¡Saliendo del sistema!");
-                                break;
+                        Console.Clear();
+                        Console.WriteLine("=== AÑADIR UN LIBRO CON TITULO NUEVO AL CATÁLOGO ===\n");
+                        Console.Write("Escriba como se llama el libro que se desea agregar: ");
+                        string tituloNuevo = Console.ReadLine().Trim();
 
-                            default:
-                                Console.WriteLine("\nLa opción no es válida. Vuélvalo a intentar.");
-                                PausarPantalla();
-                                break;
-                            }
+                        Console.Write("Ingrese el ISBN del libro: ");
+                        string isbnNuevo = Console.ReadLine().Trim();
+
+                        Console.Write("Ingrese cuantas copias físicas hay del libro: ");
+                        if (int.TryParse(Console.ReadLine().Trim(), out int cantidadCopias) && cantidadCopias > 0)
+                        {
+                            miBiblioteca.Add(new Titulo(tituloNuevo, isbnNuevo, cantidadCopias, 0));
+                            Console.WriteLine($"\n¡El libro '{tituloNuevo}' se ha añadido al catálogo de forma exitosa!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nCantidad de copias no válida.Debe ser un numero positivo");
+                        }
+                        PausarPantalla();
+                        break;
+
+                    case "8":
+                        menuActivo = false;
+                        Console.WriteLine("\nGracias por usar el sistema de gestión de biblioteca escolar. ¡Hasta luego!");
+                        break;
+
+                    default:
+                        Console.WriteLine("\nLa opción no es válida. Vuélvalo a intentar.");
+                        PausarPantalla();
+                        break;
+                }
             }
         }
 
